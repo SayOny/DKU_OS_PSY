@@ -33,6 +33,7 @@
  * If You need to more functions or vaiable
  * Declare functions or struct in lab2_sync_types.h
  */
+pthread_mutex_t t1, t2, t3, t4, t5;
 
 /* Variable that contains number of data */
 int target;

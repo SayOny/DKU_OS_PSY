@@ -31,8 +31,6 @@
 
 #include "lab2_sync_types.h"
 
-pthread_mutex_t t1, t2, t3, t4, t5;
-
 /*
  * TODO
  *  Implement function which init queue nodes for front and rear
