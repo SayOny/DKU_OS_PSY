@@ -242,10 +242,11 @@ void hash_queue_add(hlist_node **hashtable, int val) {
  *  @param int val						: Data to be stored in the queue node
  */
 void hash_queue_add_cg(hlist_node **hashtable, int val) {
-    pthread_mutex_lock(&L3);
+    
     hlist_node * new_hlist_node = malloc(sizeof(hlist_node));
     queue_node * new_node = malloc(sizeof(queue_node));
     
+    pthread_mutex_lock(&L3);
     new_node->data = val;
     enqueue_cg(new_node);
     new_hlist_node->q_loc = new_node;
@@ -304,7 +305,7 @@ int value_exist(int val) {
         }
         tmp = tmp->next;
     }
-    free(tmp);
+//    free(tmp);
     return 0;
 }
 
@@ -324,8 +325,10 @@ void hash_queue_insert_by_target() {
  *  Implement function which find the bucket location using target
  */
 void hash_queue_insert_by_target_cg() {
-    pthread_mutex_lock(&L4);
+    
     int t = hash(target);
+    
+    pthread_mutex_lock(&L4);
     if (value_exist(target) == 0) {
         
         hash_queue_add_cg(&hashlist[t], target);
@@ -341,9 +344,12 @@ void hash_queue_insert_by_target_fg() {
     pthread_mutex_lock(&L4);
     int t = hash(target);
     pthread_mutex_unlock(&L4);
+    
+    pthread_mutex_lock(&L4);
     if (value_exist(target) == 0) {
         hash_queue_add_fg(&hashlist[t], target);
     }
+    pthread_mutex_unlock(&L4);
 }
 
 /*
@@ -377,8 +383,8 @@ void hash_queue_delete_by_target() {
         }
         tmp = tmp->next;
     }
-    free(tmp);
-    free(tmp2);
+//    free(tmp);
+//    free(tmp2);
 }
 
 /*
@@ -387,11 +393,12 @@ void hash_queue_delete_by_target() {
  *  using target and delete node that contains target
  */
 void hash_queue_delete_by_target_cg() {
-    pthread_mutex_lock(&L5);
+    
     int h = hash(target);
     hlist_node *tmp = malloc(sizeof(hlist_node));
     hlist_node *tmp2 = malloc(sizeof(hlist_node));
     
+    pthread_mutex_lock(&L5);
     tmp = hashlist[h];
     
     if (tmp == NULL) {
@@ -413,9 +420,9 @@ void hash_queue_delete_by_target_cg() {
         }
         tmp = tmp->next;
     }
-    free(tmp);
-    free(tmp2);
     pthread_mutex_unlock(&L5);
+    //    free(tmp);
+    //    free(tmp2);
 }
 
 /*
@@ -469,7 +476,7 @@ void hash_queue_delete_by_target_fg() {
         tmp = tmp->next;
         pthread_mutex_unlock(&L5);
     }
-    free(tmp);
-    free(tmp2);
+//    free(tmp);
+//    free(tmp2);
 }
 

@@ -316,10 +316,10 @@ INVALID_ARGS:
 
 	return LAB2_ERROR;
     
-    free(front);
-    free(rear);
-    for (int j = 0; j<HASH_SIZE; j++) {
-        free(hashlist[j]);
-    }
+//    free(front);
+//    free(rear);
+//    for (int j = 0; j<HASH_SIZE; j++) {
+//        free(hashlist[j]);
+//    }
 }
 
