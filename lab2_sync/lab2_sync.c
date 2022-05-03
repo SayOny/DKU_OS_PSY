@@ -169,20 +169,25 @@ void dequeue_fg(queue_node *del_node) {
         pthread_mutex_lock(&L2);
         front = del_node->next;
         pthread_mutex_unlock(&L2);
+        
         pthread_mutex_lock(&L2);
         del_node->next->prev = NULL;
         pthread_mutex_unlock(&L2);
+        
     }else if (del_node->next == NULL){
         pthread_mutex_lock(&L2);
         rear = del_node->prev;
         pthread_mutex_unlock(&L2);
+        
         pthread_mutex_lock(&L2);
         del_node->prev->next = NULL;
         pthread_mutex_unlock(&L2);
+        
     }else{
         pthread_mutex_lock(&L2);
         del_node->next->prev = del_node->prev;
         pthread_mutex_unlock(&L2);
+        
         pthread_mutex_lock(&L2);
         del_node->prev->next = del_node->next;
         pthread_mutex_unlock(&L2);
@@ -248,7 +253,11 @@ void hash_queue_add_cg(hlist_node **hashtable, int val) {
     
     pthread_mutex_lock(&L3);
     new_node->data = val;
+    pthread_mutex_unlock(&L3);
+    
     enqueue_cg(new_node);
+    
+    pthread_mutex_lock(&L3);
     new_hlist_node->q_loc = new_node;
     
     new_hlist_node->next = *hashtable;
@@ -413,7 +422,9 @@ void hash_queue_delete_by_target_cg() {
     while (tmp->next != NULL) {
         if (tmp->next->q_loc->data == target) {
             tmp2 = tmp->next->next;
+            pthread_mutex_lock(&L5);
             dequeue_cg(tmp->next->q_loc);
+            pthread_mutex_unlock(&L5);
             free(tmp->next);
             tmp->next = tmp2;
             return;
