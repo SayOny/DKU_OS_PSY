@@ -304,6 +304,7 @@ int value_exist(int val) {
         }
         tmp = tmp->next;
     }
+    free(tmp);
     return 0;
 }
 
@@ -376,6 +377,8 @@ void hash_queue_delete_by_target() {
         }
         tmp = tmp->next;
     }
+    free(tmp);
+    free(tmp2);
 }
 
 /*
@@ -410,6 +413,8 @@ void hash_queue_delete_by_target_cg() {
         }
         tmp = tmp->next;
     }
+    free(tmp);
+    free(tmp2);
     pthread_mutex_unlock(&t5);
 }
 
@@ -460,7 +465,11 @@ void hash_queue_delete_by_target_fg() {
             
             return;
         }
+        pthread_mutex_lock(&t5);
         tmp = tmp->next;
+        pthread_mutex_unlock(&t5);
     }
+    free(tmp);
+    free(tmp2);
 }
 

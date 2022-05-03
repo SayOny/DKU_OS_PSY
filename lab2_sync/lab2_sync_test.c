@@ -309,5 +309,11 @@ INVALID_ARGS:
 	lab2_sync_example(argv[0]);
 
 	return LAB2_ERROR;
+    
+    free(front);
+    free(rear);
+    for (int j = 0; j<HASH_SIZE; j++) {
+        free(hashlist[j]);
+    }
 }
 
