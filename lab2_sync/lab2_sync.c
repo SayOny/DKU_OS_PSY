@@ -382,7 +382,6 @@ void hash_queue_delete_by_target() {
         dequeue(tmp->q_loc);
         free(hashlist[h]);
         hashlist[h] =tmp2;
-        break;
     }else{
         while (tmp->next != NULL) {
             if (tmp->next->q_loc->data == target) {
