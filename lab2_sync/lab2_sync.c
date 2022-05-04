@@ -377,27 +377,28 @@ void hash_queue_delete_by_target() {
     tmp = hashlist[h];
     
     if (tmp == NULL) {
-        return;
-    }
-    if (tmp->q_loc->data == target) {
+    }else if (tmp->q_loc->data == target) {
         tmp2 = hashlist[h]->next;
         dequeue(tmp->q_loc);
         free(hashlist[h]);
         hashlist[h] =tmp2;
-        return;
-    }
-    while (tmp->next != NULL) {
-        if (tmp->next->q_loc->data == target) {
-            tmp2 = tmp->next->next;
-            dequeue(tmp->next->q_loc);
-            free(tmp->next);
-            tmp->next = tmp2;
-            return;
+        break;
+    }else{
+        while (tmp->next != NULL) {
+            if (tmp->next->q_loc->data == target) {
+                tmp2 = tmp->next->next;
+                dequeue(tmp->next->q_loc);
+                free(tmp->next);
+                tmp->next = tmp2;
+                break;;
+            }
+            tmp = tmp->next;
         }
-        tmp = tmp->next;
     }
+
 //    free(tmp);
 //    free(tmp2);
+    return;
 }
 
 /*
@@ -461,9 +462,7 @@ void hash_queue_delete_by_target_fg() {
     pthread_mutex_unlock(&L5);
     
     if (tmp == NULL) {
-        return;
-    }
-    if (tmp->q_loc->data == target) {
+    }else if (tmp->q_loc->data == target) {
         pthread_mutex_lock(&L5);
         tmp2 = hashlist[h]->next;
         pthread_mutex_unlock(&L5);
@@ -474,27 +473,28 @@ void hash_queue_delete_by_target_fg() {
         pthread_mutex_lock(&L5);
         hashlist[h] =tmp2;
         pthread_mutex_unlock(&L5);
-        return;
-    }
-    while (tmp->next != NULL) {
-        if (tmp->next->q_loc->data == target) {
+    }else{
+        while (tmp->next != NULL) {
+            if (tmp->next->q_loc->data == target) {
+                pthread_mutex_lock(&L5);
+                tmp2 = tmp->next->next;
+                pthread_mutex_unlock(&L5);
+                
+                dequeue_fg(tmp->next->q_loc);
+                free(tmp->next);
+                
+                pthread_mutex_lock(&L5);
+                tmp->next = tmp2;
+                pthread_mutex_unlock(&L5);
+                
+                break;
+            }
             pthread_mutex_lock(&L5);
-            tmp2 = tmp->next->next;
+            tmp = tmp->next;
             pthread_mutex_unlock(&L5);
-            
-            dequeue_fg(tmp->next->q_loc);
-            free(tmp->next);
-            
-            pthread_mutex_lock(&L5);
-            tmp->next = tmp2;
-            pthread_mutex_unlock(&L5);
-            
-            return;
         }
-        pthread_mutex_lock(&L5);
-        tmp = tmp->next;
-        pthread_mutex_unlock(&L5);
     }
+    
 //    free(tmp);
 //    free(tmp2);
 }
