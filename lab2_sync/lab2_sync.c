@@ -255,12 +255,14 @@ void hash_queue_add_cg(hlist_node **hashtable, int val) {
     hlist_node * new_hlist_node = malloc(sizeof(hlist_node));
     queue_node * new_node = malloc(sizeof(queue_node));
     
+    
     new_node->data = val;
-    enqueue(new_node);
+    enqueue_cg(new_node);
     new_hlist_node->q_loc = new_node;
     
     new_hlist_node->next = *hashtable;
     *hashtable = new_hlist_node;
+    
 }
 
 /*
@@ -275,8 +277,10 @@ void hash_queue_add_fg(hlist_node **hashtable, int val) {
     hlist_node * new_hlist_node = malloc(sizeof(hlist_node));
     queue_node * new_node = malloc(sizeof(queue_node));
     
+    pthread_mutex_lock(&L3);
     new_node->data = val;
-    enqueue(new_node);
+    
+    enqueue_fg(new_node);
     new_hlist_node->q_loc = new_node;
     
     new_hlist_node->next = *hashtable;
@@ -323,7 +327,7 @@ void hash_queue_insert_by_target() {
 void hash_queue_insert_by_target_cg() {
     int t = hash(target);
     if (value_exist(target) == 0) {
-        hash_queue_add(&hashlist[t], target);
+        hash_queue_add_cg(&hashlist[t], target);
     }
 }
 
@@ -334,7 +338,7 @@ void hash_queue_insert_by_target_cg() {
 void hash_queue_insert_by_target_fg() {
     int t = hash(target);
     if (value_exist(target) == 0) {
-        hash_queue_add(&hashlist[t], target);
+        hash_queue_add_fg(&hashlist[t], target);
     }
 }
 
@@ -397,7 +401,7 @@ void hash_queue_delete_by_target_cg() {
     while (tmp->next != NULL) {
         if (tmp->next->q_loc->data == target) {
             tmp2 = tmp->next->next;
-            dequeue(tmp->next->q_loc);
+            dequeue_cg(tmp->next->q_loc);
             free(tmp->next);
             tmp->next = tmp2;
             return;
@@ -432,7 +436,7 @@ void hash_queue_delete_by_target_fg() {
     while (tmp->next != NULL) {
         if (tmp->next->q_loc->data == target) {
             tmp2 = tmp->next->next;
-            dequeue(tmp->next->q_loc);
+            dequeue_fg(tmp->next->q_loc);
             free(tmp->next);
             tmp->next = tmp2;
             return;
