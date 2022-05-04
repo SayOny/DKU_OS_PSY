@@ -314,11 +314,12 @@ int value_exist(int val) {
     tmp = hashlist[h];
     while (tmp != NULL) {
         if (tmp->q_loc->data == val) {
+            free(tmp);
             return 1;
         }
         tmp = tmp->next;
     }
-//    free(tmp);
+    free(tmp);
     return 0;
 }
 
@@ -496,5 +497,6 @@ void hash_queue_delete_by_target_fg() {
     
 //    free(tmp);
 //    free(tmp2);
+    return;
 }
 
