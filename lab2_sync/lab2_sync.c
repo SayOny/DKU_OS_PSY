@@ -146,6 +146,7 @@ void dequeue(queue_node *del_node) {
  *  @param queue_node *del_node		: Node which you need to delete at queue in coarse-grained manner.
  */
 void dequeue_cg(queue_node *del_node) {
+    pthread_mutex_lock(&L2);
     if (front == rear) {
     }else if(del_node->prev == NULL){
         front = del_node->next;
@@ -158,6 +159,7 @@ void dequeue_cg(queue_node *del_node) {
         del_node->prev->next = del_node->next;
     }
     free(del_node);
+    pthread_mutex_unlock(&L2);
 }
 
 /*
@@ -169,14 +171,31 @@ void dequeue_cg(queue_node *del_node) {
 void dequeue_fg(queue_node *del_node) {
     if (front == rear) {
     }else if(del_node->prev == NULL){
+        pthread_mutex_lock(&L2);
         front = del_node->next;
+        pthread_mutex_unlock(&L2);
+        
+        pthread_mutex_lock(&L2);
         del_node->next->prev = NULL;
+        pthread_mutex_unlock(&L2);
+        
     }else if (del_node->next == NULL){
+        pthread_mutex_lock(&L2);
         rear = del_node->prev;
+        pthread_mutex_unlock(&L2);
+        
+        pthread_mutex_lock(&L2);
         del_node->prev->next = NULL;
+        pthread_mutex_unlock(&L2);
+        
     }else{
+        pthread_mutex_lock(&L2);
         del_node->next->prev = del_node->prev;
+        pthread_mutex_unlock(&L2);
+        
+        pthread_mutex_lock(&L2);
         del_node->prev->next = del_node->next;
+        pthread_mutex_unlock(&L2);
     }
     free(del_node);
 }
