@@ -411,25 +411,24 @@ void hash_queue_delete_by_target_cg() {
     tmp = hashlist[h];
     
     if (tmp == NULL) {
-        return;
-    }
-    if (tmp->q_loc->data == target) {
+    }else if (tmp->q_loc->data == target) {
         tmp2 = hashlist[h]->next;
         free(hashlist[h]);
         hashlist[h] =tmp2;
-        return;
-    }
-    while (tmp->next != NULL) {
-        if (tmp->next->q_loc->data == target) {
-            tmp2 = tmp->next->next;
-            dequeue_cg(tmp->next->q_loc);
-            free(tmp->next);
-            tmp->next = tmp2;
-            return;
+    }else{
+        while (tmp->next != NULL) {
+            if (tmp->next->q_loc->data == target) {
+                tmp2 = tmp->next->next;
+                dequeue_cg(tmp->next->q_loc);
+                free(tmp->next);
+                tmp->next = tmp2;
+            }
+            tmp = tmp->next;
         }
-        tmp = tmp->next;
     }
     pthread_mutex_unlock(&L5);
+    
+    return;
 //    free(tmp);
 //    free(tmp2);
 }
