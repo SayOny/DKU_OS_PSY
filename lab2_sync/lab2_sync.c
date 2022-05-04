@@ -384,7 +384,7 @@ void hash_queue_delete_by_target() {
     }
     if (tmp->q_loc->data == target) {
         tmp2 = hashlist[h]->next;
-//        dequeue(tmp->q_loc);
+        dequeue(tmp->q_loc);
         free(hashlist[h]);
         hashlist[h] =tmp2;
         
@@ -425,7 +425,7 @@ void hash_queue_delete_by_target_cg() {
     if (tmp == NULL) {
     }else if (tmp->q_loc->data == target) {
         tmp2 = hashlist[h]->next;
-//        dequeue_cg(tmp->q_loc);
+        dequeue_cg(tmp->q_loc);
         free(hashlist[h]);
         hashlist[h] =tmp2;
     }else{
@@ -476,7 +476,7 @@ void hash_queue_delete_by_target_fg() {
         tmp2 = hashlist[h]->next;
         pthread_mutex_unlock(&L5);
         
-//        dequeue_fg(tmp->q_loc);
+        dequeue_fg(tmp->q_loc);
         free(hashlist[h]);
         
         pthread_mutex_lock(&L5);
