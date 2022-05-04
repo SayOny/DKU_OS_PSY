@@ -73,7 +73,9 @@ void enqueue(queue_node *new_node) {
  *  @param queue_node *new_node		: Node which you need to insert at queue in coarse-grained manner.
  */
 void enqueue_cg(queue_node *new_node) {
+    pthread_mutex_lock(&L1);
     assert(new_node != NULL);
+    
     if (front == NULL) {
         front = new_node;
         rear = new_node;
@@ -82,6 +84,7 @@ void enqueue_cg(queue_node *new_node) {
         new_node->prev = rear;
     }
     rear = new_node;
+    pthread_mutex_unlock(&L1);
 }
 /*
  * TODO
@@ -90,15 +93,29 @@ void enqueue_cg(queue_node *new_node) {
  *  @param queue_node *new_node		: Node which you need to insert at queue in fine-grained manner.
  */
 void enqueue_fg(queue_node *new_node) {
-    aassert(new_node != NULL);
+    assert(new_node != NULL);
     if (front == NULL) {
+        pthread_mutex_lock(&L1);
         front = new_node;
+        pthread_mutex_unlock(&L1);
+        
+        pthread_mutex_lock(&L1);
         rear = new_node;
+        pthread_mutex_unlock(&L1);
+        
     }else{
+        pthread_mutex_lock(&L1);
         rear->next = new_node;
+        pthread_mutex_unlock(&L1);
+        
+        pthread_mutex_lock(&L1);
         new_node->prev = rear;
+        pthread_mutex_unlock(&L1);
+        
     }
+    pthread_mutex_lock(&L1);
     rear = new_node;
+    pthread_mutex_unlock(&L1);
 }
 
 /*
