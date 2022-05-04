@@ -40,13 +40,13 @@ void init_queue() {
     front = malloc(sizeof(queue_node));
     rear = malloc(sizeof(queue_node));
     
+    // front와 rear의 next의
     front->next = NULL;
     front->prev = NULL;
     front->data = 0;
     rear->next = NULL;
     rear->next = NULL;
     rear->data = 0;
-    
 }
 
 /*
@@ -66,6 +66,7 @@ void enqueue(queue_node *new_node) {
     }
     rear = new_node;
 }
+
 /*
  * TODO
  *  Implement function which add new_node at next rear node
@@ -86,6 +87,7 @@ void enqueue_cg(queue_node *new_node) {
     rear = new_node;
     pthread_mutex_unlock(&L1);
 }
+
 /*
  * TODO
  *  Implement function which add new_node at next rear node
@@ -139,6 +141,7 @@ void dequeue(queue_node *del_node) {
     free(del_node);
 
 }
+
 /*
  * TODO
  *  Implement function which delete del_node at location that contains target key
@@ -243,6 +246,7 @@ void hash_queue_add(hlist_node **hashtable, int val) {
     new_hlist_node->next = *hashtable;
     *hashtable = new_hlist_node;
 }
+
 /*
  * TODO
  *  Implement function which insert the resilt of finding the location 
@@ -377,6 +381,7 @@ void hash_queue_delete_by_target() {
     }
     if (tmp->q_loc->data == target) {
         tmp2 = hashlist[h]->next;
+        dequeue(tmp->q_loc);
         free(hashlist[h]);
         hashlist[h] =tmp2;
         return;
@@ -413,6 +418,7 @@ void hash_queue_delete_by_target_cg() {
     if (tmp == NULL) {
     }else if (tmp->q_loc->data == target) {
         tmp2 = hashlist[h]->next;
+        dequeue_cg(tmp->q_loc);
         free(hashlist[h]);
         hashlist[h] =tmp2;
     }else{
@@ -422,15 +428,18 @@ void hash_queue_delete_by_target_cg() {
                 dequeue_cg(tmp->next->q_loc);
                 free(tmp->next);
                 tmp->next = tmp2;
+                break;
             }
             tmp = tmp->next;
         }
     }
     pthread_mutex_unlock(&L5);
     
+    //    free(tmp);
+    //    free(tmp2);
+    
     return;
-//    free(tmp);
-//    free(tmp2);
+
 }
 
 /*
@@ -459,6 +468,7 @@ void hash_queue_delete_by_target_fg() {
         tmp2 = hashlist[h]->next;
         pthread_mutex_unlock(&L5);
         
+        dequeue_fg(tmp->q_loc);
         free(hashlist[h]);
         
         pthread_mutex_lock(&L5);
