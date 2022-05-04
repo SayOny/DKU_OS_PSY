@@ -334,10 +334,12 @@ void hash_queue_insert_by_target() {
  *  Implement function which find the bucket location using target
  */
 void hash_queue_insert_by_target_cg() {
+    pthread_mutex_lock(&L4);
     int t = hash(target);
     if (value_exist(target) == 0) {
         hash_queue_add_cg(&hashlist[t], target);
     }
+    pthread_mutex_unlock(&L4);
 }
 
 /*
@@ -345,9 +347,14 @@ void hash_queue_insert_by_target_cg() {
  *  Implement function which find the bucket location using target
  */
 void hash_queue_insert_by_target_fg() {
+    pthread_mutex_lock(&L4);
     int t = hash(target);
+    pthread_mutex_unlock(&L4);
+    
     if (value_exist(target) == 0) {
+        pthread_mutex_lock(&L4);
         hash_queue_add_fg(&hashlist[t], target);
+        pthread_mutex_unlock(&L4);
     }
 }
 
