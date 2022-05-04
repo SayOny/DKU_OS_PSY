@@ -314,6 +314,7 @@ int value_exist(int val) {
     tmp = hashlist[h];
     while (tmp != NULL) {
         if (tmp->q_loc->data == val) {
+            // free(tmp);
             return 1;
         }
         tmp = tmp->next;
@@ -377,12 +378,18 @@ void hash_queue_delete_by_target() {
     tmp = hashlist[h];
     
     if (tmp == NULL) {
+        //    free(tmp);
+        //    free(tmp2);
         return;
     }
     if (tmp->q_loc->data == target) {
         tmp2 = hashlist[h]->next;
+//        dequeue(tmp->q_loc);
         free(hashlist[h]);
         hashlist[h] =tmp2;
+        
+        //    free(tmp);
+        //    free(tmp2);
         return;
     }
     while (tmp->next != NULL) {
@@ -391,12 +398,13 @@ void hash_queue_delete_by_target() {
             dequeue(tmp->next->q_loc);
             free(tmp->next);
             tmp->next = tmp2;
+            
+            //    free(tmp);
+            //    free(tmp2);
             return;
         }
         tmp = tmp->next;
     }
-//    free(tmp);
-//    free(tmp2);
 }
 
 /*
@@ -417,6 +425,7 @@ void hash_queue_delete_by_target_cg() {
     if (tmp == NULL) {
     }else if (tmp->q_loc->data == target) {
         tmp2 = hashlist[h]->next;
+//        dequeue_cg(tmp->q_loc);
         free(hashlist[h]);
         hashlist[h] =tmp2;
     }else{
@@ -435,7 +444,6 @@ void hash_queue_delete_by_target_cg() {
     
     //    free(tmp);
     //    free(tmp2);
-    
     return;
 
 }
@@ -459,6 +467,8 @@ void hash_queue_delete_by_target_fg() {
     pthread_mutex_unlock(&L5);
     
     if (tmp == NULL) {
+        //    free(tmp);
+        //    free(tmp2);
         return;
     }
     if (tmp->q_loc->data == target) {
@@ -466,11 +476,15 @@ void hash_queue_delete_by_target_fg() {
         tmp2 = hashlist[h]->next;
         pthread_mutex_unlock(&L5);
         
+//        dequeue_fg(tmp->q_loc);
         free(hashlist[h]);
         
         pthread_mutex_lock(&L5);
         hashlist[h] =tmp2;
         pthread_mutex_unlock(&L5);
+        
+        //    free(tmp);
+        //    free(tmp2);
         return;
     }
     while (tmp->next != NULL) {
@@ -486,13 +500,13 @@ void hash_queue_delete_by_target_fg() {
             tmp->next = tmp2;
             pthread_mutex_unlock(&L5);
             
+            //    free(tmp);
+            //    free(tmp2);
             return;
         }
         pthread_mutex_lock(&L5);
         tmp = tmp->next;
         pthread_mutex_unlock(&L5);
     }
-//    free(tmp);
-//    free(tmp2);
 }
 
