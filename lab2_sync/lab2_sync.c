@@ -48,7 +48,7 @@ void init_queue() {
     rear->next = NULL;
     rear->next = NULL;
     rear->data = 0;
-    pthread_mutex_init(&front->lock, NULL);
+    pthread_mutex_init(&rear->lock, NULL);
 }
 
 /*
@@ -255,6 +255,8 @@ int hash(int val) {
 void hash_queue_add(hlist_node **hashtable, int val) {
     hlist_node * new_hlist_node = malloc(sizeof(hlist_node));
     queue_node * new_node = malloc(sizeof(queue_node));
+    pthread_mutex_init(&new_hlist_node->lock, NULL);
+    pthread_mutex_init(&new_node->lock, NULL);
     
     new_node->data = val;
     
@@ -312,6 +314,8 @@ void hash_queue_add_cg(hlist_node **hashtable, int val) {
 void hash_queue_add_fg(hlist_node **hashtable, int val) {
     hlist_node * new_hlist_node = malloc(sizeof(hlist_node));
     queue_node * new_node = malloc(sizeof(queue_node));
+    pthread_mutex_init(&new_hlist_node->lock, NULL);
+    pthread_mutex_init(&new_node->lock, NULL);
     
     pthread_mutex_lock(&new_node->lock);
     new_node->data = val;
@@ -398,6 +402,8 @@ void hash_queue_delete_by_target() {
     int h;
     hlist_node *tmp = malloc(sizeof(hlist_node));
     hlist_node *tmp2 = malloc(sizeof(hlist_node));
+    pthread_mutex_init(&tmp->lock, NULL);
+    pthread_mutex_init(&tmp2->lock, NULL);
     
     h = hash(target);
     
@@ -493,6 +499,8 @@ void hash_queue_delete_by_target_fg() {
     int h;
     hlist_node *tmp = malloc(sizeof(hlist_node));
     hlist_node *tmp2 = malloc(sizeof(hlist_node));
+    pthread_mutex_init(&tmp->lock, NULL);
+    pthread_mutex_init(&tmp2->lock, NULL);
     
     h = hash(target);
     
