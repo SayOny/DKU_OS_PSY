@@ -290,7 +290,6 @@ int main(int argc, char *argv[]) {
     pthread_mutex_init(&frontL, NULL);
     pthread_mutex_init(&rearL, NULL);
     pthread_mutex_init(&hlistL, NULL);
-    pthread_mutex_init(&newNodeL, NULL);
     pthread_mutex_init(&queueL, NULL);
     pthread_mutex_init(&tartgetL, NULL);
 
@@ -318,10 +317,17 @@ INVALID_ARGS:
 
 	return LAB2_ERROR;
     
+    pthread_mutex_destroy(&frontL, NULL);
+    pthread_mutex_destroy(&rearL, NULL);
+    pthread_mutex_destroy(&hlistL, NULL);
+    pthread_mutex_destroy(&queueL, NULL);
+    pthread_mutex_destroy(&tartgetL, NULL);
+    
 //    free(front);
 //    free(rear);
 //    for (int j = 0; j<HASH_SIZE; j++) {
 //        free(hashlist[j]);
 //    }
+    
 }
 

@@ -74,7 +74,6 @@ void enqueue(queue_node *new_node) {
  *  @param queue_node *new_node        : Node which you need to insert at queue in coarse-grained manner.
  */
 void enqueue_cg(queue_node *new_node) {
-
     assert(new_node != NULL);
     pthread_mutex_lock(&frontL);
     pthread_mutex_lock(&rearL);
@@ -90,9 +89,6 @@ void enqueue_cg(queue_node *new_node) {
     pthread_mutex_unlock(&frontL);
     pthread_mutex_unlock(&rearL);
     pthread_mutex_unlock(&queueL);
-    
-
-
 }
 
 /*
