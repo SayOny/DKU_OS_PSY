@@ -286,12 +286,14 @@ void hq_test(int num_threads, int node_count, int lock_type) {
 int main(int argc, char *argv[]) {
 	int n; char junk;
 	int num_threads = 0, node_count = 0, lock_type = 0;
-    
-    pthread_mutex_init(&L1, NULL);
-    pthread_mutex_init(&L2, NULL);
-    pthread_mutex_init(&L3, NULL);
-    pthread_mutex_init(&L4, NULL);
-    pthread_mutex_init(&L5, NULL);
+
+    pthread_mutex_init(&frontL, NULL);
+    pthread_mutex_init(&rearL, NULL);
+    pthread_mutex_init(&hlistL, NULL);
+    pthread_mutex_init(&newNodeL, NULL);
+    pthread_mutex_init(&queueL, NULL);
+    pthread_mutex_init(&tartgetL, NULL);
+
 	
 	for (int i = 1; i < argc; i++) {
 		if (sscanf(argv[i], "-t=%d%c", &n, &junk) == 1) {

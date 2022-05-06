@@ -33,7 +33,9 @@
  * If You need to more functions or vaiable
  * Declare functions or struct in lab2_sync_types.h
  */
-pthread_mutex_t L1, L2, L3, L4, L5;
+pthread_mutex_t frontL, rearL, hlistL, queueL, tartgetL;
+//pthread_mutex_t L1, L2, L3, L4, L5;
+
 
 /* Variable that contains number of data */
 int target;
@@ -48,7 +50,7 @@ typedef struct q_node {
 	struct q_node *next;
 	struct q_node *prev;
 	int data;
-    pthread_mutex_t lock;
+//    pthread_mutex_t lock;
 } queue_node;
 
 queue_node *front;
@@ -57,7 +59,7 @@ queue_node *rear;
 typedef struct hash_list {
 	struct hash_list *next;
 	struct q_node *q_loc;
-    pthread_mutex_t lock;
+//    pthread_mutex_t lock;
 } hlist_node;
 
 hlist_node *hashlist[HASH_SIZE];
