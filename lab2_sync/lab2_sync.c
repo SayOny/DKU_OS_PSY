@@ -239,6 +239,8 @@ void hash_queue_add(hlist_node **hashtable, int val) {
     hlist_node * new_hlist_node = malloc(sizeof(hlist_node));
     queue_node * new_node = malloc(sizeof(queue_node));
     
+    assert(*hashtable != NULL);
+    
     new_node->data = val;
     enqueue(new_node);
     new_hlist_node->q_loc = new_node;
@@ -260,6 +262,9 @@ void hash_queue_add_cg(hlist_node **hashtable, int val) {
     queue_node * new_node = malloc(sizeof(queue_node));
     
     pthread_mutex_lock(&L3);
+    
+    assert(*hashtable != NULL);
+    
     new_node->data = val;
     enqueue_cg(new_node);
     new_hlist_node->q_loc = new_node;
@@ -280,6 +285,8 @@ void hash_queue_add_cg(hlist_node **hashtable, int val) {
 void hash_queue_add_fg(hlist_node **hashtable, int val) {
     hlist_node * new_hlist_node = malloc(sizeof(hlist_node));
     queue_node * new_node = malloc(sizeof(queue_node));
+    
+    assert(*hashtable != NULL);
     
     pthread_mutex_lock(&L3);
     new_node->data = val;
@@ -357,9 +364,7 @@ void hash_queue_insert_by_target_fg() {
     pthread_mutex_unlock(&L4);
     
     if (value_exist(target) == 0) {
-        pthread_mutex_lock(&L4);
         hash_queue_add_fg(&hashlist[t], target);
-        pthread_mutex_unlock(&L4);
     }
 }
 
