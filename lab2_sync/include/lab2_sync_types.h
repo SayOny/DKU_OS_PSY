@@ -48,6 +48,7 @@ typedef struct q_node {
 	struct q_node *next;
 	struct q_node *prev;
 	int data;
+    pthread_mutex_t lock;
 } queue_node;
 
 queue_node *front;
@@ -56,6 +57,7 @@ queue_node *rear;
 typedef struct hash_list {
 	struct hash_list *next;
 	struct q_node *q_loc;
+    pthread_mutex_t lock;
 } hlist_node;
 
 hlist_node *hashlist[HASH_SIZE];
