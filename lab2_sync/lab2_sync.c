@@ -102,17 +102,7 @@ void enqueue_cg(queue_node *new_node) {
  *  @param queue_node *new_node        : Node which you need to insert at queue in fine-grained manner.
  */
 void enqueue_fg(queue_node *new_node) {
-    assert(new_node != NULL);
-    if (front == NULL) {
-        front = new_node;
-        rear = new_node;
-        
-    }else{
-        rear->next = new_node;
-        new_node->prev = rear;
-        
-    }
-    rear = new_node;
+
 }
 
 /*
@@ -165,8 +155,6 @@ void dequeue_cg(queue_node *del_node) {
     
     free(del_node);
     
-    
-    
 }
 
 /*
@@ -176,22 +164,7 @@ void dequeue_cg(queue_node *del_node) {
  *  @param queue_node *del_node        : Node which you need to delete at queue in fine-grained manner.
  */
 void dequeue_fg(queue_node *del_node) {
-    if (front == rear) {
-    }else if(del_node->prev == NULL){
-        front = del_node->next;
-        
-        del_node->next->prev = NULL;
-        
-    }else if (del_node->next == NULL){
-        rear = del_node->prev;
-        
-        del_node->prev->next = NULL;
-        
-    }else{
-        del_node->next->prev = del_node->prev;
-        del_node->prev->next = del_node->next;
-    }
-    free(del_node);
+
 }
 
 /*
@@ -250,17 +223,14 @@ void hash_queue_add_cg(hlist_node **hashtable, int val) {
     hlist_node * new_hlist_node = malloc(sizeof(hlist_node));
     queue_node * new_node = malloc(sizeof(queue_node));
 
-    
+    pthread_mutex_lock(&hlistL);
     new_node->data = val;
     enqueue_cg(new_node);
     new_hlist_node->q_loc = new_node;
-    
     new_hlist_node->next = *hashtable;
-    
-    pthread_mutex_lock(&hlistL);
+
     *hashtable = new_hlist_node;
     pthread_mutex_unlock(&hlistL);
-
     
 }
 
@@ -273,18 +243,6 @@ void hash_queue_add_cg(hlist_node **hashtable, int val) {
  *  @param int val                        : Data to be stored in the queue node
  */
 void hash_queue_add_fg(hlist_node **hashtable, int val) {
-    hlist_node * new_hlist_node = malloc(sizeof(hlist_node));
-    queue_node * new_node = malloc(sizeof(queue_node));
-    
-    new_node->data = val;
-    
-    enqueue_fg(new_node);
-    
-    new_hlist_node->q_loc = new_node;
-    
-    new_hlist_node->next = *hashtable;
-    
-    *hashtable = new_hlist_node;
 }
 
 /*
@@ -439,46 +397,6 @@ void hash_queue_delete_by_target_cg() {
  *  using target and delete node that contains target
  */
 void hash_queue_delete_by_target_fg() {
-    int h;
-    hlist_node *tmp = malloc(sizeof(hlist_node));
-    hlist_node *tmp2 = malloc(sizeof(hlist_node));
-    
-    h = hash(target);
-    
-    tmp = hashlist[h];
-    
-    if (tmp == NULL) {
-        //    free(tmp);
-        //    free(tmp2);
-        return;
-    }
-    if (tmp->q_loc->data == target) {
-        tmp2 = hashlist[h]->next;
-        
-        dequeue_fg(tmp->q_loc);
-        free(hashlist[h]);
-        
-        hashlist[h] =tmp2;
-        
-        //    free(tmp);
-        //    free(tmp2);
-        return;
-    }
-    while (tmp->next != NULL) {
-        if (tmp->next->q_loc->data == target) {
-            tmp2 = tmp->next->next;
-            
-            dequeue_fg(tmp->next->q_loc);
-            free(tmp->next);
-            
-            tmp->next = tmp2;
-            
-            //    free(tmp);
-            //    free(tmp2);
-            return;
-        }
-        tmp = tmp->next;
-    }
 }
 
 
